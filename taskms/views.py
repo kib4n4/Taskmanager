@@ -9,6 +9,8 @@ logger= logging.getLogger(__name__)
 
 
 # Create your views here.
+#create signup view
+#create login view
 
 #create a new project and log
 @login_required
