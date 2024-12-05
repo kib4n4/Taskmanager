@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'tms',  # Ensure this app is correctly named in your project
+    'taskms',  # Ensure this app is correctly named in your project
 ]
 
 MIDDLEWARE = [
