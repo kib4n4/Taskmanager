@@ -8,9 +8,10 @@ __pycache__/
 
 # Virtual environment
 venv/
+*.venv
 .env
 
-# Django stuff:
+# Django stuff
 *.log
 *.pot
 *.pyc
@@ -23,3 +24,17 @@ media/
 
 # Static files
 staticfiles/
+static/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+.coverage
+htmlcov/
