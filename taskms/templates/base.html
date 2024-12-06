@@ -1,106 +1,58 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Base Template</title>
-
+    <title>{% block title %}Base Template{% endblock %}</title>
     <style>
-
         body {
-
             font-family: Arial, sans-serif;
-
             margin: 0;
-
             padding: 0;
-
         }
-
         .navbar {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             background-color: #f8f9fa;
-
             padding: 10px 20px;
-
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
         }
-
         .navbar a {
-
             text-decoration: none;
-
             color: #333;
-
             margin: 0 10px;
-
             padding: 5px 10px;
-
             border-radius: 5px;
-
             transition: background-color 0.3s;
-
         }
-
         .navbar a:hover {
-
             background-color: #e2e6ea;
-
         }
-
         .container {
-
             padding: 20px;
-
         }
-
     </style>
-
 </head>
-
 <body>
 
     <!-- Navigation Bar -->
-
     <nav class="navbar">
-
         <div class="navbar-brand">
-            <h1>Task management system</h1>
-            
+            <h1>Task Management System</h1>
         </div>
-
         <div class="navbar-links">
-
-            <a href="#login">Login</a>
-
-            <a href="#signup">Sign Up</a>
-
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
         </div>
-
     </nav>
 
     <!-- Main Content -->
-
     <div class="container">
-
-        <h1>Welcome to MyWebsite</h1>
-
-        <p>This is a base template with a navigation bar.</p>
-
+        {% block content %}
+   
+        {% endblock %}
     </div>
 
 </body>
-
 </html>
