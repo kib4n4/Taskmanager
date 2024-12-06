@@ -12,6 +12,7 @@ from .views import (
     delete_task,
     login_view,
     signup_view,
+    home,
 )
 
 urlpatterns = [
@@ -25,5 +26,6 @@ urlpatterns = [
     path('projects/<int:project_id>/tasks/<int:task_id>/delete/' , delete_task, name='delete_task'),
     path('login/', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
+    path('', views.home, name='home'),  # Home page
 
 ]

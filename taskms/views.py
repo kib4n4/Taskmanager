@@ -12,6 +12,11 @@ logger= logging.getLogger(__name__)
 
 
 # Create your views here.
+#homeview
+def home(request):
+    return render(request, 'home.html')
+
+
 #create signup view
 
 def signup_view(request):
