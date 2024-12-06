@@ -14,6 +14,16 @@ logger= logging.getLogger(__name__)
 # Create your views here.
 #create signup view
 
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            logger.info(f'User {user.username} created')
+            return redirect('login')  # Redirect to login page
+    else:
+        form = SignupForm()
+    return render(request, 'signup.html', {'form': form})
 
 
 #create login view
