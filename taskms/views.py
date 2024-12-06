@@ -1,5 +1,8 @@
 from django.shortcuts import render,redirect, get_object_or_404
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import SignupForm, LoginForm
 from django.http import HttpResponse
 from .models import *
 import logging
@@ -10,6 +13,9 @@ logger= logging.getLogger(__name__)
 
 # Create your views here.
 #create signup view
+
+
+
 #create login view
 
 #create a new project and log
