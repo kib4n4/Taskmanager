@@ -32,6 +32,26 @@
         .container {
             padding: 20px;
         }
+        .add-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.3s;
+        }
+        .add-button:hover {
+            transform: rotate(90deg);
+        }
+        .add-button svg {
+            width: 50px;
+            height: 50px;
+            stroke: #f00; /* Red color for stroke */
+            fill: none;
+            transition: fill 0.3s;
+        }
+        .add-button:hover svg {
+            fill: #800; /* Darker red fill on hover */
+        }
     </style>
 </head>
 <body>
@@ -44,13 +64,31 @@
         <div class="navbar-links">
             <a href="{% url 'login' %}">Login</a>
             <a href="{% url 'signup' %}">Sign Up</a>
+          <a href='{% url 'create_project'%}'>
+            <button
+                title="Add New"
+                class="add-button"
+             
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                        stroke-width="1.5"
+                    ></path>
+                    <path d="M8 12H16" stroke-width="1.5"></path>
+                    <path d="M12 16V8" stroke-width="1.5"></path>
+                </svg>
+            </button></a>
+
         </div>
     </nav>
 
     <!-- Main Content -->
     <div class="container">
         {% block content %}
-   
         {% endblock %}
     </div>
 

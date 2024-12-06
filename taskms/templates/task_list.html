@@ -1,6 +1,114 @@
-<!--task_list.html-->
-{% extends 'base.html'%}
-{% block title%} Task List{% endblock%}
-{% block content%}
-    <h1>Welcome, {{ user.username }}</h1>
+{% extends 'base.html' %}
+{% block title %}Task List{% endblock %}
+{% block content %}
+    <style>
+        .container {
+            padding: 20px;
+            background-color: #f0f0f0; /* Light background */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #007bff; /* Primary color */
+        }
+
+        .task-cards {
+            display: flex;
+            flex-direction: row; /* Horizontal layout */
+            flex-wrap: wrap; /* Allow wrapping of cards */
+            gap: 15px; /* Space between cards */
+            justify-content: center; /* Center cards horizontally */
+        }
+
+        .task-card {
+            background-color: #ffffff; /* White background for cards */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            width: 250px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .task-card:hover {
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        .task-card h3 {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #333; /* Dark text color */
+        }
+
+        .task-card p {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.7); /* Lighter text color */
+            margin: 5px 0;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .button {
+            background-color: #007bff; /* Primary color */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container">
+        <div class="header">
+            <h1>Your Tasks for Project: {{ project.name }}</h1>
+        </div>
+        
+        <div class="task-cards">
+            {% if tasks %}
+                {% for task in tasks %}
+                    <div class="task-card">
+                        <h3>{{ task.title }}</h3>
+                        <p>{{ task.description }}</p>
+                        <div class="button-container">
+                            <a href="{% url 'edit_task' project.id task.id %}" class="button">Edit</a>
+                            <a href="{% url 'delete_task' project.id task.id %}" class="button">Delete</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No tasks available for this project.</p>
+            {% endif %}
+        </div>
+
+        <div class="back-link">
+            <a href="{% url 'project_list' %}">Back to Project List</a>
+        </div>
+    </div>
 {% endblock %}

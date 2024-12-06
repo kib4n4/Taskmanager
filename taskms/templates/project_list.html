@@ -1,6 +1,97 @@
-<!--project_list.html-->
-{% extends 'base.html'%}
-{% block title%} Project List{% endblock%}
-{% block content%}
-    <h1>Welcome, {{ user.username }}</h1>
+<!-- project_list.html -->
+{% extends 'base.html' %}
+{% block title %}Project List{% endblock %}
+{% block content %}
+<h1>Your Projects</h1>
+
+<div class="cards">
+    {% if projects %}
+        {% for project in projects %}
+            <div class="card {% if forloop.counter == 1 %}red{% elif forloop.counter == 2 %}blue{% elif forloop.counter == 3 %}green{% else %}red{% endif %}">
+                <p class="tip" style='margin-top:12px;'>{{ project.name }}</p>
+                <p class="second-text">{{ project.description }}</p>
+                <div class="button-container">
+                    <a href="{% url 'edit_project' project.id %}" class="link">Edit</a>
+                    <a href="{% url 'delete_project' project.id %}" class="link">Delete</a>
+                </div>
+                <a href="{% url 'task_list' project.id %}" style="color: white;">View Tasks</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no projects yet.</p>
+    {% endif %}
+</div>
+
+<style>
+.cards {
+  display: flex;
+  flex-direction: row; /* Horizontal layout */
+  flex-wrap: wrap; /* Allow wrapping of cards */
+  gap: 15px; /* Space between cards */
+  justify-content: center; /* Center cards horizontally */
+}
+
+.cards .red {
+  background-color: #f43f5e;
+}
+
+.cards .blue {
+  background-color: #3b82f6;
+}
+
+.cards .green {
+  background-color: #22c55e;
+}
+
+.cards .card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  height: 200px;
+  width: 250px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: 400ms;
+}
+
+.cards .card p.tip {
+  padding: 15px;  
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.cards .card p.second-text {
+  font-size: .7em;
+}
+
+.cards .card:hover {
+  transform: scale(1.1, 1.1);
+}
+
+.cards:hover > .card:not(:hover) {
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
+}
+
+/* Link styles */
+.button-container {
+  display: flex;
+  gap: 10px; /* Space between links */
+}
+
+.link {
+  color: white; /* Link color */
+  text-decoration: none; /* Remove underline */
+  font-size: 1em; /* Font size for links */
+  transition: color 0.3s; /* Transition for hover effect */
+}
+
+.link:hover {
+  color: #ddd; /* Change color on hover */
+}
+</style>
+
 {% endblock %}
