@@ -1,5 +1,6 @@
 #urls.py
 from django.urls import path
+from . import views
 from .views import (
     create_project,
     project_list,
@@ -9,6 +10,7 @@ from .views import (
     task_list,
     edit_task,
     delete_task,
+    login_view
 )
 
 urlpatterns = [
@@ -20,4 +22,5 @@ urlpatterns = [
     path('projects/<int:project_id>/tasks/' , task_list, name='task_list'),
     path('projects/<int:project_id>/tasks/<int:task_id>/edit/' , edit_task, name='edit_task'),
     path('projects/<int:project_id>/tasks/<int:task_id>/delete/' , delete_task, name='delete_task'),
+    path('login/', views.login_view, name='login')
 ]

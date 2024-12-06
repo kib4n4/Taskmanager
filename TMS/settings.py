@@ -90,6 +90,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
+LOGIN_REDIRECT_URL = 'home'  # Redirect to the home page after login
+LOGOUT_REDIRECT_URL = 'home'  # Redirect to the home page after logout
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

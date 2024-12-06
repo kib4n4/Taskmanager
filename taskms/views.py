@@ -17,6 +17,17 @@ logger= logging.getLogger(__name__)
 
 
 #create login view
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home') 
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
 
 #create a new project and log
 @login_required
