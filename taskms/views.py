@@ -110,7 +110,7 @@ def task_list(request,project_id):
 
 #Edit tasks and log
 @login_required
-def edit_task(request, task_id):
+def edit_task(request, task_id, project_id):
     task = get_object_or_404(Task, id=task_id, project__owner=request.user)
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -120,7 +120,7 @@ def edit_task(request, task_id):
         task.description = description
         task.save()
         logger.info(f'Task {task.title} updated by {request.user.username}')
-        return redirect('task_list', project_id=task.project.id)
+        return redirect('task_list', project_id=project_id)
     return render(request, 'edit_task.html', {'task': task})
 
 

@@ -1,6 +1,151 @@
-<!--edit_project.html-->
-{% extends 'base.html'%}
-{% block title%} Edit project{% endblock%}
-{% block content%}
-    <h1>Welcome, {{ user.username }}</h1>
+{% extends 'base.html' %}
+{% block title %}Edit Project{% endblock %}
+{% block content %}
+    <style>
+        /* Container Styling */
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            background-color: #001925; /* Dark background */
+            border-left: 5px solid #caf438; /* Green accent */
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 20px),
+                calc(100% - 20px) 100%,
+                0 100%
+            );
+            color: #87a4b6; /* Light text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #caf438; /* Highlighted heading */
+            font-weight: bold;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            position: relative;
+            display: block;
+        }
+
+        label .input {
+            background-color: #002733; /* Input background */
+            color: #87a4b6;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            outline: none;
+            border-left: 1px solid transparent;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        label .input:focus {
+            border-left: 5px solid #caf438; /* Green border on focus */
+        }
+
+        label span {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #87a4b6;
+            pointer-events: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        label .input:focus + span,
+        label .input:not(:placeholder-shown) + span {
+            top: -10px;
+            left: 12px;
+            font-size: 0.8rem;
+            color: #caf438;
+            font-weight: bold;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: #caf438; /* Green button */
+            color: #001925;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .submit-btn:hover {
+            background-color: transparent;
+            color: #caf438;
+            border: 1px solid #caf438;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #caf438;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container">
+        <div class="header">
+            <h1>Edit Project: {{ project.name }}</h1>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <!-- Project Name -->
+            <label>
+                <input type="text" name="name" class="input" value="{{ project.name }}" required placeholder=" " />
+                <span>Project Name</span>
+            </label>
+
+            <!-- Project Description -->
+            <label>
+                <textarea name="description" class="input" placeholder=" ">{{ project.description }}</textarea>
+                <span>Project Description</span>
+            </label>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Save Changes</button>
+        </form>
+
+        <!-- Back Link -->
+        <div class="back-link">
+            <a href="{% url 'project_list' %}">Back to Project List</a>
+        </div>
+    </div>
 {% endblock %}

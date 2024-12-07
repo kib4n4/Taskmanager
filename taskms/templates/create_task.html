@@ -15,10 +15,10 @@
         .form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 500px;
+            gap: 25px; /* Increased spacing between fields */
+            max-width: 600px; /* Increased max-width */
             width: 100%;
-            padding: 30px;
+            padding: 40px; /* Increased padding */
             border-left: 5px solid #caf438; /* Green accent */
             background-color: #002733; /* Form background */
             clip-path: polygon(
@@ -39,55 +39,61 @@
             margin-bottom: 10px;
         }
 
-        /* Input and Textarea Styling */
+        /* Label Styling */
+        .form label {
+            position: relative;
+            display: block;
+        }
+
         .form label .input {
-            background-color: #002733; /* Input background matches form */
+            background-color: transparent; /* Transparent background */
             color: #87a4b6; /* Text color */
             width: 100%;
-            padding: 12px;
+            padding: 12px 5px;
             border: none;
-            border-left: 1px solid transparent;
+            border-bottom: 2px solid #87a4b6; /* Underline border */
             font-weight: bold;
-            transition: all 0.3s ease-in-out;
+            transition: border-color 0.3s ease-in-out;
         }
 
         .form label .input:focus {
-            border-left: 5px solid #caf438; /* Focus border */
+            border-color: #caf438; /* Green underline on focus */
             outline: none;
         }
 
         .form label span {
             color: #87a4b6;
             position: absolute;
-            left: 12px;
-            top: 12px;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
             font-size: 1rem;
             cursor: text;
-            transition: 0.3s ease;
+            transition: all 0.3s ease-in-out;
         }
 
         .form label .input:placeholder-shown + span {
-            top: 15px;
+            top: 50%;
             font-size: 1rem;
         }
 
         .form label .input:focus + span,
-        .form label .input:valid + span {
+        .form label .input:not(:placeholder-shown) + span {
             color: #caf438; /* Highlight label */
-            top: 0px;
+            top: -10px;
             font-size: 0.8rem;
             font-weight: bold;
         }
 
         .form textarea {
             resize: none;
-            height: 100px; /* Fixed height for textarea */
+            height: 120px; /* Slightly increased height */
         }
 
         /* Submit Button Styling */
         .submit {
             border: none;
-            padding: 15px;
+            padding: 15px 50px; /* Increased horizontal size */
             border-radius: 5px;
             color: #001925; /* Button text */
             font-size: 16px;
@@ -95,6 +101,7 @@
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             font-weight: bold;
+            align-self: center; /* Center-align button */
         }
 
         .submit:hover {
@@ -124,16 +131,23 @@
             <p class="title">Create Task for Project: {{ project.name }}</p>
             <form method="post">
                 {% csrf_token %}
-                <label>
-                    <input class="input" type="text" name="title" placeholder=" " required>
+                <!-- Task Title -->
+                <label for="title">
+                    <input id="title" class="input" type="text" name="title" placeholder=" " required>
                     <span>Task Title</span>
                 </label>
-                <label>
-                    <textarea class="input" name="description" placeholder=" " required></textarea>
+
+                <!-- Task Description -->
+                <label for="description">
+                    <textarea id="description" class="input" name="description" placeholder=" " required></textarea>
                     <span>Task Description</span>
                 </label>
+
+                <!-- Submit Button -->
                 <button class="submit" type="submit">Create Task</button>
             </form>
+
+            <!-- Back Link -->
             <div class="back-link">
                 <a href="{% url 'task_list' project.id %}">Back to Task List</a>
             </div>

@@ -1,6 +1,194 @@
-<!--edit_task.html-->
-{% extends 'base.html'%}
-{% block title%} Edit Task{% endblock%}
-{% block content%}
-    
+{% extends 'base.html' %}
+{% block title %}Edit Task{% endblock %}
+{% block content %}
+    <style>
+        /* Container Styling */
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            background-color: #001925; /* Dark background */
+            border-left: 5px solid #caf438; /* Green accent */
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 20px),
+                calc(100% - 20px) 100%,
+                0 100%
+            );
+            color: #87a4b6; /* Light text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #caf438; /* Highlighted heading */
+            font-weight: bold;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            position: relative;
+            display: block;
+        }
+
+        label .input {
+            background-color: #002733; /* Input background */
+            color: #87a4b6;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            outline: none;
+            border-left: 1px solid transparent;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        label .input:focus {
+            border-left: 5px solid #caf438; /* Green border on focus */
+        }
+
+        label span {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #87a4b6;
+            pointer-events: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        label .input:focus + span,
+        label .input:not(:placeholder-shown) + span {
+            top: -10px;
+            left: 12px;
+            font-size: 0.8rem;
+            color: #caf438;
+            font-weight: bold;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        /* Dropdown Section */
+        .dropdown-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #002733;
+            border-radius: 5px;
+            border-left: 5px solid #caf438; /* Green accent */
+        }
+
+        .dropdown-container h2 {
+            font-size: 1.2rem;
+            color: #caf438;
+            margin-bottom: 10px;
+        }
+
+        select {
+            background-color: #001925;
+            color: #87a4b6;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            outline: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: border-left 0.3s ease-in-out;
+        }
+
+        select:focus {
+            border: 2px solid #caf438;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: #caf438; /* Green button */
+            color: #001925;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .submit-btn:hover {
+            background-color: transparent;
+            color: #caf438;
+            border: 1px solid #caf438;
+        }
+
+        /* Back Link */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #caf438;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container">
+        <div class="header">
+            <h1>Edit Task: {{ task.title }}</h1>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <!-- Task Title -->
+            <label>
+                <input type="text" name="title" class="input" value="{{ task.title }}" required placeholder=" " />
+                <span>Task Title</span>
+            </label>
+
+            <!-- Task Description -->
+            <label>
+                <textarea name="description" class="input" placeholder=" ">{{ task.description }}</textarea>
+                <span>Task Description</span>
+            </label>
+
+            <!-- Task Status Section -->
+            <div class="dropdown-container">
+                <h2>Update Task Status</h2>
+                <select name="status" required>
+                    {% for status, display in task.STATUS_CHOICES %}
+                        <option value="{{ status }}" {% if task.status == status %}selected{% endif %}>
+                            {{ display }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Save Changes</button>
+        </form>
+
+        <!-- Back Link -->
+        <div class="back-link">
+            <a href="{% url 'task_list' task.project.id %}">Back to Task List</a>
+        </div>
+    </div>
 {% endblock %}
