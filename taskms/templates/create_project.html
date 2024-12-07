@@ -1,18 +1,159 @@
-<!--create_project.html-->
 {% extends 'base.html' %}
 
 {% block title %}Create Project{% endblock %}
 
 {% block content %}
-<h1>Create a New Project</h1>
-<form method="POST">
-    {% csrf_token %}
-    <label for="name">Project Name:</label>
-    <input type="text" id="name" name="name" required>
-    
-    <label for="description">Description:</label>
-    <textarea id="description" name="description"></textarea>
-    
-    <button type="submit">Create Project</button>
-</form>
+    <style>
+        /* Custom styles from Uiverse.io by Prakhar227 */
+        body{
+            background-color:skyblue;
+        }
+        .orange {
+            color: #caf438;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 30px auto;
+            background-color: #001925;
+            padding: 30px;
+            border-left: 5px solid #caf438;
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 20px),
+                calc(100% - 20px) 100%,
+                0 100%
+            );
+        }
+
+        .heading {
+            display: block;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .c1 {
+            display: block;
+            color: #d3f35f;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .c2 {
+            display: block;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-container .form .input,
+        .form-container .form .textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background-color: #002733;
+            color: #87a4b6;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-left: 1px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-container .form .input:focus,
+        .form-container .form .textarea:focus {
+            border-left: 5px solid #caf438;
+        }
+
+        .form-container .form .textarea {
+            resize: none;
+            max-height: 150px;
+        }
+
+        .form-container .form .button-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-container .form .button-container .send-button {
+            flex-basis: 70%;
+            background: #caf438;
+            padding: 10px;
+            color: #001925;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-container .form .button-container .send-button:hover {
+            background: transparent;
+            border: 1px solid #ff7a01;
+            color: #caf438;
+        }
+
+        .form-container .form .button-container .reset-button-container {
+            flex-basis: 30%;
+            filter: drop-shadow(1px 1px 0px #ff7a01);
+        }
+
+        .form-container .form .button-container .reset-button-container .reset-button {
+            position: relative;
+            text-align: center;
+            padding: 10px;
+            color: #caf438;
+            font-weight: bold;
+            background: #001925;
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                0 100%
+            );
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-container
+            .form
+            .button-container
+            .reset-button-container
+            .reset-button:hover {
+            background: #caf438;
+            color: #001925;
+        }
+    </style>
+
+    <div class="form-container">
+        <div class="form">
+            <span class="heading">Create Project</span>
+            <span class="c1">Provide the details below to create a new project.</span>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input class="input" type="text" id="name" name="name" placeholder="Project Name" required>
+                <textarea class="textarea" id="description" name="description" placeholder="Description" required></textarea>
+                <span class="c2">Complete the fields and submit the form to create your project.</span>
+
+                <div class="button-container">
+                    <div class="send-button">
+                        <button type="submit" style="all: unset; cursor: pointer;">Create Project</button>
+                    </div>
+                    <div class="reset-button-container">
+                        <div class="reset-button" id="reset-btn">
+                            <a href="/" style="all: unset; cursor: pointer; display: block;">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

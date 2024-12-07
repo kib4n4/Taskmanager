@@ -2,41 +2,47 @@
 {% block title %}Task List{% endblock %}
 {% block content %}
     <style>
+        body {
+            font-family: Arial, sans-serif; /* General font for the body */
+            background-color: #f4f5f7; /* Light gray background */
+            color: #333; /* Dark text color */
+        }
+
         .container {
             padding: 20px;
-            background-color: #f0f0f0; /* Light background */
+            max-width: 1200px; /* Max width for the container */
+            margin: auto; /* Center the container */
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .header h1 {
-            font-size: 28px;
-            color: #007bff; /* Primary color */
+            font-size: 32px;
+            color: #0052cc; /* Jira primary color */
         }
 
         .task-cards {
             display: flex;
-            flex-direction: row; /* Horizontal layout */
             flex-wrap: wrap; /* Allow wrapping of cards */
-            gap: 15px; /* Space between cards */
-            justify-content: center; /* Center cards horizontally */
+            gap: 20px; /* Space between cards */
+            justify-content: flex-start; /* Align cards to the left */
         }
 
         .task-card {
             background-color: #ffffff; /* White background for cards */
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-            width: 250px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            width: 300px; /* Fixed width for cards */
             padding: 15px;
-            text-align: center;
             transition: transform 0.3s;
+            border-left: 5px solid #0052cc; /* Left border for visual interest */
         }
 
         .task-card:hover {
-            transform: scale(1.05); /* Scale effect on hover */
+            transform: translateY(-5px); /* Slight lift effect on hover */
         }
 
         .task-card h3 {
@@ -46,38 +52,44 @@
         }
 
         .task-card p {
-            font-size: 14px;
+            font-family: 'Courier New', Courier, monospace; /* Courier font */
+            font-size: 16px; /* Adjusted font size */
             color: rgba(0, 0, 0, 0.7); /* Lighter text color */
             margin: 5px 0;
         }
 
         .button-container {
             display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
+            justify-content: space-between; /* Space buttons evenly */
+            margin-top: 15px;
         }
 
-        .button {
-            background-color: #007bff; /* Primary color */
-            color: white;
-            padding: 10px;
+        .synthwave-pixel-button {
+            padding: 10px 20px;
+            color: #ffffff;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: bold;
+            background-color: #0052cc; /* Jira button color */
+            border: none;
             border-radius: 5px;
-            text-decoration: none;
+            cursor: pointer;
             transition: background-color 0.3s;
         }
 
-        .button:hover {
-            background-color: #0056b3; /* Darker shade on hover */
+        .synthwave-pixel-button:hover {
+            background-color: #0065ff; /* Darker shade on hover */
         }
 
         .back-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .back-link a {
-            color: #007bff;
+            color: #0052cc; /* Jira primary color */
             text-decoration: none;
+            font-size: 16px;
         }
 
         .back-link a:hover {
@@ -97,13 +109,13 @@
                         <h3>{{ task.title }}</h3>
                         <p>{{ task.description }}</p>
                         <div class="button-container">
-                            <a href="{% url 'edit_task' project.id task.id %}" class="button">Edit</a>
-                            <a href="{% url 'delete_task' project.id task.id %}" class="button">Delete</a>
+                            <button><a href="{% url 'edit_task' project.id task.id %}" class="synthwave-pixel-button">Edit</a></button>
+                            <button><a href="{% url 'delete_task' project.id task.id %}" class="synthwave-pixel-button">Delete</a></button>
                         </div>
                     </div>
                 {% endfor %}
             {% else %}
-                <p>No tasks available for this project.</p>
+                <p>No tasks available.</p>
             {% endif %}
         </div>
 
