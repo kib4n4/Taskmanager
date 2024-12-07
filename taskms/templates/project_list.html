@@ -1,97 +1,150 @@
-<!-- project_list.html -->
 {% extends 'base.html' %}
 {% block title %}Project List{% endblock %}
 {% block content %}
-<h1>Your Projects</h1>
+    <style>
+        /* Main Container Styling */
+        .projects-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background-color: #001925; /* Dark background */
+            padding: 30px;
+            border-left: 5px solid #caf438; /* Green accent */
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 20px),
+                calc(100% - 20px) 100%,
+                0 100%
+            );
+            color: #87a4b6; /* Light text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        }
 
-<div class="cards">
-    {% if projects %}
-        {% for project in projects %}
-            <div class="card {% if forloop.counter == 1 %}red{% elif forloop.counter == 2 %}blue{% elif forloop.counter == 3 %}green{% else %}red{% endif %}">
-                <p class="tip" style='margin-top:12px;'>{{ project.name }}</p>
-                <p class="second-text">{{ project.description }}</p>
-                <div class="button-container">
-                    <a href="{% url 'edit_project' project.id %}" class="link">Edit</a>
-                    <a href="{% url 'delete_project' project.id %}" class="link">Delete</a>
-                </div>
-                <a href="{% url 'task_list' project.id %}" style="color: white;">View Tasks</a>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>You have no projects yet.</p>
-    {% endif %}
-</div>
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-<style>
-.cards {
-  display: flex;
-  flex-direction: row; /* Horizontal layout */
-  flex-wrap: wrap; /* Allow wrapping of cards */
-  gap: 15px; /* Space between cards */
-  justify-content: center; /* Center cards horizontally */
-}
+        .header h1 {
+            font-size: 2rem;
+            color: #caf438; /* Highlighted heading */
+            font-weight: bold;
+        }
 
-.cards .red {
-  background-color: #f43f5e;
-}
+        /* Grid Layout for Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three columns per row */
+            gap: 20px; /* Space between grid items */
+            justify-content: center; /* Center grid items */
+        }
 
-.cards .blue {
-  background-color: #3b82f6;
-}
+        /* Project Card Styling */
+        .card {
+            background-color: #002733; /* Card background */
+            border-left: 5px solid #caf438; /* Green accent */
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: white; /* White text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        }
 
-.cards .green {
-  background-color: #22c55e;
-}
+        .card:hover {
+            transform: translateY(-5px); /* Lift on hover */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow */
+        }
 
-.cards .card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  height: 200px;
-  width: 250px;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  transition: 400ms;
-}
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #caf438; /* Highlighted title */
+            font-weight: bold;
+        }
 
-.cards .card p.tip {
-  padding: 15px;  
-  font-size: 1em;
-  font-weight: 700;
-}
+        .card p {
+            font-size: 0.9rem;
+            color: #87a4b6; /* Lighter text for description */
+            margin-bottom: 15px;
+        }
 
-.cards .card p.second-text {
-  font-size: .7em;
-}
+        /* Button Container and Styling */
+        .button-container {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            justify-content: center;
+        }
 
-.cards .card:hover {
-  transform: scale(1.1, 1.1);
-}
+        .button-container a {
+            display: inline-block;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            color: #001925; /* Button text */
+            background-color: #caf438; /* Button background */
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-.cards:hover > .card:not(:hover) {
-  filter: blur(10px);
-  transform: scale(0.9, 0.9);
-}
+        .button-container a:hover {
+            background-color: transparent;
+            border: 1px solid #caf438;
+            color: #caf438; /* Invert hover effect */
+        }
 
-/* Link styles */
-.button-container {
-  display: flex;
-  gap: 10px; /* Space between links */
-}
+        /* View Tasks Link Styling */
+        .view-tasks {
+            margin-top: 10px;
+            color: #caf438; /* Highlighted link */
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
 
-.link {
-  color: white; /* Link color */
-  text-decoration: none; /* Remove underline */
-  font-size: 1em; /* Font size for links */
-  transition: color 0.3s; /* Transition for hover effect */
-}
+        .view-tasks:hover {
+            color: white; /* Invert hover effect */
+        }
 
-.link:hover {
-  color: #ddd; /* Change color on hover */
-}
-</style>
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
+            }
+        }
 
+        @media (max-width: 600px) {
+            .projects-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+            }
+        }
+    </style>
+
+    <div class="projects-container">
+        <div class="header">
+            <h1>Your Projects</h1>
+        </div>
+
+        <div class="projects-grid">
+            {% if projects %}
+                {% for project in projects %}
+                    <div class="card">
+                        <h3>{{ project.name }}</h3>
+                        <p>{{ project.description }}</p>
+                        <div class="button-container">
+                            <a href="{% url 'edit_project' project.id %}">Edit</a>
+                            <a href="{% url 'delete_project' project.id %}">Delete</a>
+                        </div>
+                        <a href="{% url 'task_list' project.id %}" class="view-tasks">View Tasks</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: white;">You have no projects yet.</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

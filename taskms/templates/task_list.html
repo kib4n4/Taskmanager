@@ -2,16 +2,21 @@
 {% block title %}Task List{% endblock %}
 {% block content %}
     <style>
-        body {
-            font-family: Arial, sans-serif; /* General font for the body */
-            background-color: #f4f5f7; /* Light gray background */
-            color: #333; /* Dark text color */
-        }
-
+        /* Container Styling */
         .container {
             padding: 20px;
-            max-width: 1200px; /* Max width for the container */
-            margin: auto; /* Center the container */
+            max-width: 1200px;
+            margin: auto;
+            background-color: #001925; /* Dark background */
+            border-left: 5px solid #caf438; /* Green accent */
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 20px),
+                calc(100% - 20px) 100%,
+                0 100%
+            );
+            color: #87a4b6; /* Light text */
         }
 
         .header {
@@ -20,76 +25,84 @@
         }
 
         .header h1 {
-            font-size: 32px;
-            color: #0052cc; /* Jira primary color */
+            font-size: 1.8rem;
+            color: #caf438; /* Highlighted heading */
+            font-weight: bold;
         }
 
+        /* Task Card Styling */
         .task-cards {
             display: flex;
-            flex-wrap: wrap; /* Allow wrapping of cards */
-            gap: 20px; /* Space between cards */
-            justify-content: flex-start; /* Align cards to the left */
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
         }
 
         .task-card {
-            background-color: #ffffff; /* White background for cards */
+            background-color: #002733; /* Card background */
+            border-left: 5px solid #caf438; /* Green accent */
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-            width: 300px; /* Fixed width for cards */
-            padding: 15px;
-            transition: transform 0.3s;
-            border-left: 5px solid #0052cc; /* Left border for visual interest */
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .task-card:hover {
-            transform: translateY(-5px); /* Slight lift effect on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Lift effect */
         }
 
         .task-card h3 {
-            font-size: 20px;
-            margin: 10px 0;
-            color: #333; /* Dark text color */
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #caf438; /* Task title highlight */
+            font-weight: bold;
         }
 
         .task-card p {
-            font-family: 'Courier New', Courier, monospace; /* Courier font */
-            font-size: 16px; /* Adjusted font size */
-            color: rgba(0, 0, 0, 0.7); /* Lighter text color */
-            margin: 5px 0;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #87a4b6; /* Task description color */
         }
 
+        /* Button Styling */
         .button-container {
             display: flex;
-            justify-content: space-between; /* Space buttons evenly */
-            margin-top: 15px;
+            justify-content: space-between;
         }
 
-        .synthwave-pixel-button {
-            padding: 10px 20px;
-            color: #ffffff;
-            font-size: 14px;
-            text-transform: uppercase;
+        .button-container a {
+            display: inline-block;
+            padding: 10px 15px;
+            font-size: 0.9rem;
             font-weight: bold;
-            background-color: #0052cc; /* Jira button color */
-            border: none;
+            text-transform: uppercase;
+            text-align: center;
+            color: #001925; /* Dark text on buttons */
+            background-color: #caf438; /* Button background */
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        .synthwave-pixel-button:hover {
-            background-color: #0065ff; /* Darker shade on hover */
+        .button-container a:hover {
+            background-color: transparent;
+            border: 1px solid #caf438;
+            color: #caf438; /* Inverted hover effect */
         }
 
+        /* Back Link Styling */
         .back-link {
             text-align: center;
             margin-top: 30px;
         }
 
         .back-link a {
-            color: #0052cc; /* Jira primary color */
+            color: #caf438;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 1rem;
+            font-weight: bold;
         }
 
         .back-link a:hover {
@@ -109,8 +122,8 @@
                         <h3>{{ task.title }}</h3>
                         <p>{{ task.description }}</p>
                         <div class="button-container">
-                            <button><a href="{% url 'edit_task' project.id task.id %}" class="synthwave-pixel-button">Edit</a></button>
-                            <button><a href="{% url 'delete_task' project.id task.id %}" class="synthwave-pixel-button">Delete</a></button>
+                            <a href="{% url 'edit_task' project.id task.id %}">Edit</a>
+                            <a href="{% url 'delete_task' project.id task.id %}">Delete</a>
                         </div>
                     </div>
                 {% endfor %}

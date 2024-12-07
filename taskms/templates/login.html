@@ -1,16 +1,87 @@
-<!--home.html-->
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-</body>
-</html>
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <style>
+        body{
+            background-color: skyblue;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 30px auto;
+            background-color: #001925;
+            padding: 30px;
+            border-left: 5px solid #caf438;
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 20px),
+                calc(100% - 20px) 100%,
+                0 100%
+            );
+        }
+
+        .form-container .form .input {
+            width: 100%;
+            padding: 10px;
+            background-color: #002733;
+            border: none;
+            outline: none;
+            color: #87a4b6;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-left: 1px solid transparent;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-container .form .input:focus {
+            border-left: 5px solid #caf438;
+        }
+
+        .form-container .form .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-container .form .button-container .send-button {
+            background: #caf438;
+            padding: 10px;
+            color: #001925;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-container .form .button-container .send-button:hover {
+            background: transparent;
+            border: 1px solid #ff7a01;
+            color: #caf438;
+        }
+
+        .heading {
+            display: block;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+
+    <div class="form-container">
+        <div class="form">
+            <span class="heading">Login</span>
+            <form method="post">
+                {% csrf_token %}
+                <input class="input" type="text" name="username" placeholder="Username" required>
+                <input class="input" type="password" name="password" placeholder="Password" required>
+                <div class="button-container">
+                    <button type="submit" class="send-button">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
