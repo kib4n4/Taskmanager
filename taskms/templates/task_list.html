@@ -2,7 +2,7 @@
 {% block title %}Task List{% endblock %}
 {% block content %}
     <style>
-        /* Container Styling */
+        /* Main Container Styling */
         .container {
             padding: 20px;
             max-width: 1200px;
@@ -20,7 +20,9 @@
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
         }
 
@@ -62,34 +64,81 @@
 
         .task-card p {
             font-size: 1rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: #87a4b6; /* Task description color */
         }
 
-        /* Button Styling */
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .button-container a {
-            display: inline-block;
-            padding: 10px 15px;
+        /* Status Indicator */
+        .status {
             font-size: 0.9rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-align: center;
-            color: #001925; /* Dark text on buttons */
-            background-color: #caf438; /* Button background */
+            padding: 5px 10px;
             border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s, color 0.3s;
+            font-weight: bold;
+            display: inline-block;
         }
 
-        .button-container a:hover {
-            background-color: transparent;
-            border: 1px solid #caf438;
-            color: #caf438; /* Inverted hover effect */
+        .status.pending {
+            background-color: #f43f5e;
+            color: white;
+        }
+
+        .status.in_progress {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .status.completed {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        /* Icon Buttons */
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #87a4b6;
+            transition: color 0.3s;
+        }
+
+        .icon-button:hover {
+            color: #caf438;
+        }
+
+        .icon-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Add New Button Styling */
+        .add-new-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.3s ease;
+        }
+
+        .add-new-btn:hover {
+            transform: rotate(90deg); /* Rotate on hover */
+        }
+
+        .add-new-btn svg {
+            width: 50px;
+            height: 50px;
+            stroke: #caf438;
+            fill: none;
+            transition: all 0.3s ease;
+        }
+
+        .add-new-btn:hover svg {
+            fill: #0056b3; /* Fill color on hover */
+            stroke: #87a4b6;
+        }
+
+        .add-new-btn:active svg {
+            fill: #caf438; /* Active fill */
+            stroke: #001925; /* Active stroke */
         }
 
         /* Back Link Styling */
@@ -113,17 +162,49 @@
     <div class="container">
         <div class="header">
             <h1>Your Tasks for Project: {{ project.name }}</h1>
+            <!-- Add New Button -->
+            <a href="{% url 'create_task' project.id %}">
+                <button class="add-new-btn" title="Add New Task">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                            stroke-width="1.5"
+                        ></path>
+                        <path d="M8 12H16" stroke-width="1.5"></path>
+                        <path d="M12 16V8" stroke-width="1.5"></path>
+                    </svg>
+                </button>
+            </a>
         </div>
-        
+
         <div class="task-cards">
             {% if tasks %}
                 {% for task in tasks %}
                     <div class="task-card">
                         <h3>{{ task.title }}</h3>
                         <p>{{ task.description }}</p>
-                        <div class="button-container">
-                            <a href="{% url 'edit_task' project.id task.id %}">Edit</a>
-                            <a href="{% url 'delete_task' project.id task.id %}">Delete</a>
+                        <span class="status {{ task.status }}">{{ task.get_status_display }}</span>
+                        <div style="margin-top: 10px;">
+                            <!-- Edit Icon -->
+                            <a href="{% url 'edit_task' project.id task.id %}" title="Edit Task">
+                                <button class="icon-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4.052V4.06c0 .004-.003.008-.003.011A9.956 9.956 0 003.052 11h.008A9.956 9.956 0 0011 19.05v.008A9.953 9.953 0 0020.96 11h-.009a9.953 9.953 0 00-8.96-6.948zM12 17.75v-4.8l-2.3 2.3a1.5 1.5 0 11-2.12-2.12l4.4-4.4a1.5 1.5 0 112.12 2.12l-2.3 2.3v4.8z"/>
+                                    </svg>
+                                </button>
+                            </a>
+
+                            <!-- Delete Icon -->
+                            <a href="{% url 'delete_task' project.id task.id %}" title="Delete Task">
+                                <button class="icon-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7L5 21m0 0L19 7m-14 0L19 21"/>
+                                    </svg>
+                                </button>
+                            </a>
                         </div>
                     </div>
                 {% endfor %}
