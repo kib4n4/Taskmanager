@@ -126,7 +126,7 @@ def edit_task(request, task_id, project_id):
 
 #delete tasks and log
 @login_required
-def delete_task(request, task_id):
+def delete_task(request, task_id,project_id):
     task = get_object_or_404(Task, id=task_id, project__owner=request.user)
     project_id = task.project.id
     task.delete()
