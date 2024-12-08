@@ -5,87 +5,215 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{% block title %}Base Template{% endblock %}</title>
 <style>
+/* General Body Styling */
 body {
-font-family: Arial, sans-serif;
-margin: 0;
-padding: 0;
-background-color: skyblue;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #001925;  /* Dark background */
+    color: #87a4b6;  /* Lighter text color */
 }
+
+/* Navbar Styling */
 .navbar {
-display: flex;
-justify-content: space-between;
-align-items: center;
-background-color: #f8f9fa;
-padding: 10px 20px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002733;  /* Darker navbar background */
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 .navbar a {
-text-decoration: none;
-color: #333;
-margin: 0 10px;
-padding: 5px 10px;
-border-radius: 5px;
-transition: background-color 0.3s;
+    text-decoration: none;
+    color: #caf438;  /* Accent color for links */
+    margin: 0 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
+
 .navbar a:hover {
-background-color: #e2e6ea;
+    background-color: #caf438;  /* Hover effect for navbar links */
+    color: #001925;  /* Dark text color on hover */
 }
-.container {
-padding: 20px;
-}
+
+/* Button Styling */
 .add-button {
-background-color: transparent;
-border: none;
-cursor: pointer;
-outline: none;
-transition: transform 0.3s;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.3s;
 }
+
 .add-button:hover {
-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
+
 .add-button svg {
-width: 50px;
-height: 50px;
-stroke: #f00; /* Red color for stroke */
-fill: none;
-transition: fill 0.3s;
+    width: 50px;
+    height: 50px;
+    stroke: #caf438;  /* Accent color for icon stroke */
+    fill: none;
+    transition: fill 0.3s;
 }
+
 .add-button:hover svg {
-fill: #800; /* Darker red fill on hover */
+    fill: #caf438;  /* Accent color on hover for icon */
+}
+
+/* Container for Main Content */
+.container {
+    padding: 20px;
+}
+
+/* Project List Styles */
+.projects-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: #001925;  /* Dark background */
+    padding: 30px;
+    border-left: 5px solid #caf438;  /* Accent greenish border */
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    color: #87a4b6;  /* Lighter text color */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: #caf438;  /* Accent greenish color for the header */
+    font-weight: bold;
+}
+
+/* Grid Layout for Projects */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Project Card Styling */
+.card {
+    background-color: #002733;  /* Dark card background */
+    border-left: 5px solid #caf438;  /* Accent greenish border */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #caf438;  /* Accent color for the project name */
+    font-weight: bold;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #87a4b6;  /* Lighter text color for descriptions */
+    margin-bottom: 15px;
+}
+
+/* Icon Container Styling */
+.icon-container a {
+    color: #caf438;  /* Accent color for icons */
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.icon-container a:hover {
+    color: white;  /* Change icon color on hover */
+}
+
+/* Modal Styling */
+.modal-content {
+    background: #002733;  /* Dark modal background */
+    color: #87a4b6;  /* Lighter text color */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    color: #caf438;  /* Accent color for modal title */
+    margin-bottom: 20px;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel-btn {
+    background: #87a4b6;  /* Lighter grayish-blue */
+    color: #001925;  /* Dark background color */
+}
+
+.cancel-btn:hover {
+    background: #6e6b80;  /* Darker shade on hover */
+}
+
+.delete-btn {
+    background: #f43f5e;  /* Red color for delete */
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #e11d48;  /* Darker red on hover */
 }
 </style>
 </head>
 <body>
 <!-- Navigation Bar -->
 <nav class="navbar">
-<div class="navbar-brand">
-<h1>Task Management System</h1>
-</div>
-<div class="navbar-links">
-    <a href="{% url 'home' %}">Home</a> <!-- Home Button -->
-    {% if user.is_authenticated %}
-        <!-- Show Logout button if the user is logged in -->
-        <a href="{% url 'logout' %}">Logout</a>
-        <a href="{% url 'create_project' %}">
-            <button title="New Project" class="add-button">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
-                    <path d="M8 12H16" stroke-width="1.5"></path>
-                    <path d="M12 16V8" stroke-width="1.5"></path>
-                </svg>
-            </button>
-        </a>
-    {% else %}
-        <!-- Show Login and Sign Up buttons if the user is not logged in -->
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Sign Up</a>
-    {% endif %}
-</div>
+    <div class="navbar-brand">
+        <h1> Dime Task Management System</h1>
+    </div>
+    <div class="navbar-links">
+        <a href="{% url 'home' %}">Home</a> <!-- Home Button -->
+        {% if user.is_authenticated %}
+            <!-- Show Logout button if the user is logged in -->
+            <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'create_project' %}">
+                <button title="New Project" class="add-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                        <path d="M8 12H16" stroke-width="1.5"></path>
+                        <path d="M12 16V8" stroke-width="1.5"></path>
+                    </svg>
+                </button>
+            </a>
+        {% else %}
+            <!-- Show Login and Sign Up buttons if the user is not logged in -->
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
+        {% endif %}
+    </div>
 </nav>
+
 <!-- Main Content -->
 <div class="container">
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 </div>
+
+<!-- FontAwesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
