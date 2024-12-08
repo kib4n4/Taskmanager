@@ -13,6 +13,7 @@ from .views import (
     login_view,
     signup_view,
     home,
+    logout_view,
 )
 
 urlpatterns = [
@@ -27,5 +28,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('signup/', views.signup_view, name='signup'),
     path('', views.home, name='home'),  # Home page
+    path('logout/', views.logout_view, name='logout'),
 
 ]
