@@ -106,6 +106,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+LOGIN_URL = '/login/'  # Path to your login page
 LOGIN_REDIRECT_URL = 'home'  # Redirect to the home page after login
 LOGOUT_REDIRECT_URL = 'home'  # Redirect to the home page after logout
 

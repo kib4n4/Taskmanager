@@ -1,87 +1,126 @@
 {% extends 'base.html' %}
-
 {% block title %}Login{% endblock %}
-
 {% block content %}
-    <style>
-        body{
-            background-color: skyblue;
-        }
-        .form-container {
-            max-width: 500px;
-            margin: 30px auto;
-            background-color: #001925;
-            padding: 30px;
-            border-left: 5px solid #caf438;
-            clip-path: polygon(
-                0 0,
-                100% 0,
-                100% calc(100% - 20px),
-                calc(100% - 20px) 100%,
-                0 100%
-            );
-        }
+<style>
+body {
+    background-color: skyblue;
+}
+.form-container {
+    max-width: 500px;
+    margin: 30px auto;
+    background-color: #001925; /* Dark background */
+    padding: 30px;
+    border-left: 5px solid #caf438; /* Accent border */
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 20px),
+        calc(100% - 20px) 100%,
+        0 100%
+    );
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+.form-container .form .input {
+    width: 100%;
+    padding: 10px;
+    background-color: #002733; /* Input background */
+    border: none;
+    outline: none;
+    color: #87a4b6; /* Text color */
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-left: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+.form-container .form .input:focus {
+    border-left: 5px solid #caf438; /* Accent color on focus */
+}
+.form-container .form .button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+.form-container .form .button-container .send-button {
+    background: #caf438; /* Accent color */
+    padding: 10px;
+    color: #001925; /* Dark text */
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.form-container .form .button-container .send-button:hover {
+    background: transparent;
+    border: 1px solid #ff7a01; /* Orange border on hover */
+    color: #caf438;
+}
+.heading {
+    display: block;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: center;
+}
+/* Alert Styling */
+.alert-container {
+    margin-bottom: 20px;
+}
+.alert {
+    padding: 15px 20px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+.alert.error {
+    background-color: #f43f5e; /* Red for error messages */
+    color: white;
+}
+.alert.info {
+    background-color: #caf438; /* Greenish for info messages */
+    color: #001925;
+}
+.alert.success {
+    background-color: #38bdf8; /* Blue for success messages */
+    color: white;
+}
+.alert .close-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+</style>
 
-        .form-container .form .input {
-            width: 100%;
-            padding: 10px;
-            background-color: #002733;
-            border: none;
-            outline: none;
-            color: #87a4b6;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border-left: 1px solid transparent;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .form-container .form .input:focus {
-            border-left: 5px solid #caf438;
-        }
-
-        .form-container .form .button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .form-container .form .button-container .send-button {
-            background: #caf438;
-            padding: 10px;
-            color: #001925;
-            font-weight: bold;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .form-container .form .button-container .send-button:hover {
-            background: transparent;
-            border: 1px solid #ff7a01;
-            color: #caf438;
-        }
-
-        .heading {
-            display: block;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-    </style>
-
-    <div class="form-container">
-        <div class="form">
-            <span class="heading">Login</span>
-            <form method="post">
-                {% csrf_token %}
-                <input class="input" type="text" name="username" placeholder="Username" required>
-                <input class="input" type="password" name="password" placeholder="Password" required>
-                <div class="button-container">
-                    <button type="submit" class="send-button">Login</button>
+<div class="form-container">
+    <!-- Display Alert Messages -->
+    <div class="alert-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                    <button class="close-btn" onclick="this.parentElement.style.display='none';">&times;</button>
                 </div>
-            </form>
-        </div>
+            {% endfor %}
+        {% endif %}
     </div>
+
+    <!-- Login Form -->
+    <div class="form">
+        <span class="heading">Login</span>
+        <form method="post">
+            {% csrf_token %}
+            <input class="input" type="text" name="username" placeholder="Username" required>
+            <input class="input" type="password" name="password" placeholder="Password" required>
+            <div class="button-container">
+                <button type="submit" class="send-button">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
