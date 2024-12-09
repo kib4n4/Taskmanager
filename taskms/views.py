@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import SignupForm, LoginForm
 from django.http import HttpResponse
@@ -110,18 +111,31 @@ def delete_project(request, project_id):
 @login_required
 def create_task(request, project_id):
     project = get_object_or_404(Project, id=project_id, owner=request.user)
+    # Get all active users
+    active_users = User.objects.filter(is_active=True)
+    
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
-        if title:  # Ensure the task has a valid title
-            task = Task.objects.create(title=title, description=description, project=project, assigned_to=request.user)
+        assigned_to_id = request.POST.get('assigned_to')
+        
+        if title:
+            task = Task.objects.create(
+                title=title,
+                description=description,
+                project=project,
+                assigned_to_id=assigned_to_id if assigned_to_id else None
+            )
             logger.info(f'Task created: {task.title} for project {project.name} by {request.user.username}')
             messages.success(request, f"Task '{task.title}' created successfully.")
             return redirect('task_list', project_id=project.id)
         else:
             messages.error(request, "Task title cannot be empty.")
-    return render(request, 'create_task.html', {'project': project})
-
+    
+    return render(request, 'create_task.html', {
+        'project': project,
+        'active_users': active_users
+    })
 # List tasks for a project
 @login_required
 def task_list(request, project_id):
@@ -134,21 +148,31 @@ def task_list(request, project_id):
 @login_required
 def edit_task(request, task_id, project_id):
     task = get_object_or_404(Task, id=task_id, project__owner=request.user)
+    active_users = User.objects.filter(is_active=True)
+    
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
         status = request.POST.get('status')
-        if title:  # Ensure the task has a valid title
+        assigned_to_id = request.POST.get('assigned_to')
+        
+        if title:
             task.title = title
             task.description = description
             task.status = status
+            task.assigned_to_id = assigned_to_id if assigned_to_id else None
             task.save()
+            
             logger.info(f'Task {task.title} updated by {request.user.username}')
             messages.success(request, f"Task '{task.title}' updated successfully.")
             return redirect('task_list', project_id=project_id)
         else:
             messages.error(request, "Task title cannot be empty.")
-    return render(request, 'edit_task.html', {'task': task})
+    
+    return render(request, 'edit_task.html', {
+        'task': task,
+        'active_users': active_users
+    })
 
 # Delete a task
 @login_required

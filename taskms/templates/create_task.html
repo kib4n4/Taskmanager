@@ -1,156 +1,152 @@
 {% extends 'base.html' %}
 {% block title %}Create Task{% endblock %}
 {% block content %}
-    <style>
-        /* Container and Form Styling */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Full viewport height */
-            padding: 20px;
-            background-color: #001925; /* Dark background */
-        }
-
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 25px; /* Increased spacing between fields */
-            max-width: 600px; /* Increased max-width */
-            width: 100%;
-            padding: 40px; /* Increased padding */
-            border-left: 5px solid #caf438; /* Green accent */
-            background-color: #002733; /* Form background */
-            clip-path: polygon(
-                0 0,
-                100% 0,
-                100% calc(100% - 20px),
-                calc(100% - 20px) 100%,
-                0 100%
-            );
-        }
-
-        /* Title Styling */
-        .title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #caf438; /* Highlighted text color */
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        /* Label Styling */
-        .form label {
-            position: relative;
-            display: block;
-        }
-
-        .form label .input {
-            background-color: transparent; /* Transparent background */
-            color: #87a4b6; /* Text color */
-            width: 100%;
-            padding: 12px 5px;
-            border: none;
-            border-bottom: 2px solid #87a4b6; /* Underline border */
-            font-weight: bold;
-            transition: border-color 0.3s ease-in-out;
-        }
-
-        .form label .input:focus {
-            border-color: #caf438; /* Green underline on focus */
-            outline: none;
-        }
-
-        .form label span {
-            color: #87a4b6;
-            position: absolute;
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1rem;
-            cursor: text;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .form label .input:placeholder-shown + span {
-            top: 50%;
-            font-size: 1rem;
-        }
-
-        .form label .input:focus + span,
-        .form label .input:not(:placeholder-shown) + span {
-            color: #caf438; /* Highlight label */
-            top: -10px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .form textarea {
-            resize: none;
-            height: 120px; /* Slightly increased height */
-        }
-
-        /* Submit Button Styling */
-        .submit {
-            border: none;
-            padding: 15px 50px; /* Increased horizontal size */
-            border-radius: 5px;
-            color: #001925; /* Button text */
-            font-size: 16px;
-            background-color: #caf438; /* Green button */
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            font-weight: bold;
-            align-self: center; /* Center-align button */
-        }
-
-        .submit:hover {
-            background-color: transparent;
-            color: #caf438;
-            border: 1px solid #caf438;
-        }
-
-        /* Back Link Styling */
-        .back-link {
-            text-align: center;
-        }
-
-        .back-link a {
-            color: #caf438;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
+    
+<style>
+    /* Base Container */
+    .container {
+        min-height: 100vh;
+        padding: 40px 20px;
+        background-color: #001925;
+    }
+    
+    /* Form Container */
+    .form {
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: #002733;
+        border-left: 5px solid #caf438;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Title */
+    .title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #caf438;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form label {
+        display: block;
+        margin-bottom: 8px;
+        color: #87a4b6;
+        font-weight: bold;
+    }
+    
+    .input {
+        width: 100%;
+        padding: 12px;
+        background-color: #001925;
+        color: #87a4b6;
+        border: 2px solid #87a4b6;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    
+    .input:focus {
+        border-color: #caf438;
+        outline: none;
+    }
+    
+    /* Textarea */
+    textarea.input {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    /* Select Dropdown */
+    select.input {
+        appearance: none;
+        padding-right: 30px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2387a4b6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 16px;
+    }
+    
+    /* Submit Button */
+    .submit {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background-color: #caf438;
+        color: #001925;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 30px;
+    }
+    
+    /* Back Link */
+    .back-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .back-link a {
+        color: #caf438;
+        text-decoration: none;
+        font-weight: bold;
+    }
     </style>
-
+    
     <div class="container">
         <div class="form">
-            <p class="title">Create Task for Project: {{ project.name }}</p>
+            <h1 class="title">Create Task for Project: {{ project.name }}</h1>
+            
             <form method="post">
                 {% csrf_token %}
-                <!-- Task Title -->
-                <label for="title">
-                    <input id="title" class="input" type="text" name="title" placeholder=" " required>
-                    <span>Task Title</span>
-                </label>
-
-                <!-- Task Description -->
-                <label for="description">
-                    <textarea id="description" class="input" name="description" placeholder=" " required></textarea>
-                    <span>Task Description</span>
-                </label>
-
-                <!-- Submit Button -->
-                <button class="submit" type="submit">Create Task</button>
+                
+                <div class="form-group">
+                    <label for="title">Task Title</label>
+                    <input 
+                        id="title" 
+                        class="input" 
+                        type="text" 
+                        name="title" 
+                        required
+                    >
+                </div>
+    
+                <div class="form-group">
+                    <label for="description">Task Description</label>
+                    <textarea 
+                        id="description" 
+                        class="input" 
+                        name="description" 
+                        required
+                    ></textarea>
+                </div>
+    
+                <div class="form-group">
+                    <label for="assigned_to">Assign To</label>
+                    <select id="assigned_to" class="input" name="assigned_to">
+                        <option value="">-- Select User --</option>
+                        {% for user in active_users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+    
+                <button type="submit" class="submit">Create Task</button>
             </form>
-
-            <!-- Back Link -->
+    
             <div class="back-link">
                 <a href="{% url 'task_list' project.id %}">Back to Task List</a>
             </div>
         </div>
     </div>
+    
+    
 {% endblock %}

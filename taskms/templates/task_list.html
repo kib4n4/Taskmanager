@@ -2,28 +2,24 @@
 {% block title %}Task List{% endblock %}
 {% block content %}
     <style>
-        /* Main Container Styling */
+        /* Main Container */
         .container {
-            padding: 20px;
+            padding: 30px;
             max-width: 1200px;
-            margin: auto;
+            margin: 30px auto;
             background-color: #001925; /* Dark background */
-            border-left: 5px solid #caf438; /* Green accent */
-            clip-path: polygon(
-                0 0,
-                100% 0,
-                100% calc(100% - 20px),
-                calc(100% - 20px) 100%,
-                0 100%
-            );
+            border-left: 5px solid #caf438; /* Accent */
             color: #87a4b6; /* Light text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            border-radius: 8px;
         }
 
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .header h1 {
@@ -32,27 +28,19 @@
             font-weight: bold;
         }
 
-        /* Task Card Styling */
+        /* Task Cards Section */
         .task-cards {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
-            justify-content: flex-start;
         }
 
         .task-card {
             background-color: #002733; /* Card background */
-            border-left: 5px solid #caf438; /* Green accent */
+            border-left: 5px solid #caf438; /* Accent */
             border-radius: 8px;
             padding: 20px;
-            width: 300px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .task-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Lift effect */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         }
 
         .task-card h3 {
@@ -64,17 +52,18 @@
 
         .task-card p {
             font-size: 1rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #87a4b6; /* Task description color */
         }
 
-        /* Status Indicator */
+        /* Status Badge */
         .status {
             font-size: 0.9rem;
             padding: 5px 10px;
             border-radius: 5px;
             font-weight: bold;
             display: inline-block;
+            margin-bottom: 10px;
         }
 
         .status.pending {
@@ -92,56 +81,61 @@
             color: white;
         }
 
-        /* Icon Buttons */
-        .icon-button {
-            background: none;
-            border: none;
-            cursor: pointer;
+        /* Assigned User */
+        .assigned-user {
+            font-size: 0.9rem;
             color: #87a4b6;
-            transition: color 0.3s;
         }
 
-        .icon-button:hover {
+        .assigned-user span {
             color: #caf438;
+            font-weight: bold;
         }
 
-        .icon-button svg {
-            width: 20px;
-            height: 20px;
+        /* Buttons Section */
+        .task-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
         }
 
-        /* Add New Button Styling */
-        .add-new-btn {
+        .action-btn {
             background: none;
-            border: none;
+            border: 1px solid #caf438;
+            color: #caf438;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-weight: bold;
             cursor: pointer;
-            outline: none;
-            transition: transform 0.3s ease;
+            transition: background 0.3s, color 0.3s;
         }
 
-        .add-new-btn:hover {
-            transform: rotate(90deg); /* Rotate on hover */
+        .action-btn:hover {
+            background: #caf438;
+            color: #001925;
         }
 
-        .add-new-btn svg {
-            width: 50px;
-            height: 50px;
-            stroke: #caf438;
-            fill: none;
-            transition: all 0.3s ease;
+        /* Add Task Button */
+        .add-new {
+            padding: 10px 20px;
+            background-color: #caf438;
+            color: #001925;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .add-new-btn:hover svg {
-            fill: #0056b3; /* Fill color on hover */
-            stroke: #87a4b6;
+        .add-new:hover {
+            background-color: #a5d61f;
         }
 
-        .add-new-btn:active svg {
-            fill: #caf438; /* Active fill */
-            stroke: #001925; /* Active stroke */
-        }
-
-        /* Back Link Styling */
+        /* Back Link */
         .back-link {
             text-align: center;
             margin-top: 30px;
@@ -162,21 +156,8 @@
     <div class="container">
         <div class="header">
             <h1>Project: {{ project.name }}</h1>
-            <!-- Add New Button -->
             <a href="{% url 'create_task' project.id %}">
-                <button class="add-new-btn" title="Add New Task">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                            stroke-width="1.5"
-                        ></path>
-                        <path d="M8 12H16" stroke-width="1.5"></path>
-                        <path d="M12 16V8" stroke-width="1.5"></path>
-                    </svg>
-                </button>
+                <button class="add-new">Add Task</button>
             </a>
         </div>
 
@@ -187,23 +168,15 @@
                         <h3>{{ task.title }}</h3>
                         <p>{{ task.description }}</p>
                         <span class="status {{ task.status }}">{{ task.get_status_display }}</span>
-                        <div style="margin-top: 10px;">
-                            <!-- Edit Icon -->
-                            <a href="{% url 'edit_task' project.id task.id %}" title="Edit Task">
-                                <button class="icon-button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4.052V4.06c0 .004-.003.008-.003.011A9.956 9.956 0 003.052 11h.008A9.956 9.956 0 0011 19.05v.008A9.953 9.953 0 0020.96 11h-.009a9.953 9.953 0 00-8.96-6.948zM12 17.75v-4.8l-2.3 2.3a1.5 1.5 0 11-2.12-2.12l4.4-4.4a1.5 1.5 0 112.12 2.12l-2.3 2.3v4.8z"/>
-                                    </svg>
-                                </button>
+                        <p class="assigned-user">
+                            Assigned to: <span>{{ task.assigned_to.username|default:"Unassigned" }}</span>
+                        </p>
+                        <div class="task-actions">
+                            <a href="{% url 'edit_task' project.id task.id %}">
+                                <button class="action-btn">Edit</button>
                             </a>
-
-                            <!-- Delete Icon -->
-                            <a href="{% url 'delete_task' project.id task.id %}" title="Delete Task">
-                                <button class="icon-button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7L5 21m0 0L19 7m-14 0L19 21"/>
-                                    </svg>
-                                </button>
+                            <a href="{% url 'delete_task' project.id task.id %}">
+                                <button class="action-btn">Delete</button>
                             </a>
                         </div>
                     </div>
