@@ -8,6 +8,7 @@ from .models import Project, Task
 import logging
 from django.contrib import messages
 from django.utils import timezone
+from django.db.models import Count
 
 # Logger setup
 logger = logging.getLogger(__name__)
@@ -73,7 +74,7 @@ def create_project(request):
 # List of projects
 @login_required
 def project_list(request):
-    projects = Project.objects.filter(owner=request.user)
+    projects = Project.objects.filter(owner=request.user).annotate(task_count=Count('tasks'))
     logger.info(f'Projects listed by {request.user}')
     return render(request, 'project_list.html', {'projects': projects})
 

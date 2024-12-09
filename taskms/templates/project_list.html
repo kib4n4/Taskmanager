@@ -1,150 +1,150 @@
 {% extends 'base.html' %}
 {% block title %}Project List{% endblock %}
 {% block content %}
-    <style>
-        /* Main Container Styling */
-        .projects-container {
-            max-width: 1200px;
-            margin: 30px auto;
-            background-color: #001925; /* Dark background */
-            padding: 30px;
-            border-left: 5px solid #caf438; /* Green accent */
-            clip-path: polygon(
-                0 0,
-                100% 0,
-                100% calc(100% - 20px),
-                calc(100% - 20px) 100%,
-                0 100%
-            );
-            color: #87a4b6; /* Light text */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            color: #caf438; /* Highlighted heading */
-            font-weight: bold;
-        }
-
-        /* Grid Layout for Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Three columns per row */
-            gap: 20px; /* Space between grid items */
-            justify-content: center; /* Center grid items */
-        }
-
-        /* Project Card Styling */
-        .card {
-            background-color: #002733; /* Card background */
-            border-left: 5px solid #caf438; /* Green accent */
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: white; /* White text */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-        }
-
-        .card:hover {
-            transform: translateY(-5px); /* Lift on hover */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow */
-        }
-
-        .card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #caf438; /* Highlighted title */
-            font-weight: bold;
-        }
-
-        .card p {
-            font-size: 0.9rem;
-            color: #87a4b6; /* Lighter text for description */
-            margin-bottom: 15px;
-        }
-
-        /* Button Container and Styling */
-        .button-container {
-            display: flex;
-            gap: 10px; /* Space between buttons */
-            justify-content: center;
-        }
-
-        .button-container a {
-            display: inline-block;
-            padding: 8px 15px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-align: center;
-            color: #001925; /* Button text */
-            background-color: #caf438; /* Button background */
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .button-container a:hover {
-            background-color: transparent;
-            border: 1px solid #caf438;
-            color: #caf438; /* Invert hover effect */
-        }
-
-        /* View Tasks Link Styling */
-        .view-tasks {
-            margin-top: 10px;
-            color: #caf438; /* Highlighted link */
-            font-size: 0.9rem;
-            text-decoration: none;
-            display: inline-block;
-            transition: color 0.3s ease;
-        }
-
-        .view-tasks:hover {
-            color: white; /* Invert hover effect */
-        }
-
-        /* Responsive Design */
-        @media (max-width: 900px) {
-            .projects-grid {
-                grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
-            }
-        }
-
-        @media (max-width: 600px) {
-            .projects-grid {
-                grid-template-columns: 1fr; /* Single column on very small screens */
-            }
-        }
-    </style>
-
-    <div class="projects-container">
-        <div class="header">
-            <h1>Dime Projects</h1>
-        </div>
-
-        <div class="projects-grid">
-            {% if projects %}
-                {% for project in projects %}
-                    <div class="card">
-                        <h3>{{ project.name }}</h3>
-                        <p>{{ project.description }}</p>
-                        <div class="button-container">
-                            <a href="{% url 'edit_project' project.id %}">Edit</a>
-                            <a href="{% url 'delete_project' project.id %}">Delete</a>
-                        </div>
-                        <a href="{% url 'task_list' project.id %}" class="view-tasks">View Tasks</a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p style="text-align: center; color: white;">You have no projects yet.</p>
-            {% endif %}
-        </div>
+<style>
+/* Main Container Styling */
+.projects-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: #001925; /* Dark background */
+    padding: 30px;
+    border-left: 5px solid #caf438; /* Green accent */
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 20px),
+        calc(100% - 20px) 100%,
+        0 100%
+    );
+    color: #87a4b6; /* Light text */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.header h1 {
+    font-size: 2rem;
+    color: #caf438; /* Highlighted heading */
+    font-weight: bold;
+}
+/* Grid Layout for Projects */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns per row */
+    gap: 20px; /* Space between grid items */
+    justify-content: center; /* Center grid items */
+}
+/* Project Card Styling */
+.card {
+    position: relative; /* Position relative for task count badge */
+    background-color: #002733; /* Card background */
+    border-left: 5px solid #caf438; /* Green accent */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: white; /* White text */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+.card:hover {
+    transform: translateY(-5px); /* Lift on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow */
+}
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #caf438; /* Highlighted title */
+    font-weight: bold;
+}
+.card p {
+    font-size: 0.9rem;
+    color: #87a4b6; /* Lighter text for description */
+    margin-bottom: 15px;
+}
+/* Task Count Badge Styling */
+.task-count {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #caf438; /* Green background for task count */
+    color: #001925; /* Dark text */
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+/* Button Container and Styling */
+.button-container {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    justify-content: center;
+}
+.button-container a {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    color: #001925; /* Button text */
+    background-color: #caf438; /* Button background */
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.button-container a:hover {
+    background-color: transparent;
+    border: 1px solid #caf438;
+    color: #caf438; /* Invert hover effect */
+}
+/* View Tasks Link Styling */
+.view-tasks {
+    margin-top: 10px;
+    color: #caf438; /* Highlighted link */
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+.view-tasks:hover {
+    color: white; /* Invert hover effect */
+}
+/* Responsive Design */
+@media (max-width: 900px) {
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
+    }
+}
+@media (max-width: 600px) {
+    .projects-grid {
+        grid-template-columns: 1fr; /* Single column on very small screens */
+    }
+}
+</style>
+<div class="projects-container">
+    <div class="header">
+        <h1>Dime Projects</h1>
     </div>
+    <div class="projects-grid">
+        {% if projects %}
+            {% for project in projects %}
+                <div class="card">
+                    <!-- Task Count Badge -->
+                    <div class="task-count">{{ project.task_count }}</div>
+                    <h3>{{ project.name }}</h3>
+                    <p>{{ project.description }}</p>
+                    <div class="button-container">
+                        <a href="{% url 'edit_project' project.id %}">Edit</a>
+                        <a href="{% url 'delete_project' project.id %}">Delete</a>
+                    </div>
+                    <a href="{% url 'task_list' project.id %}" class="view-tasks">View Tasks</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: white;">You have no projects yet.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
