@@ -7,11 +7,8 @@
             padding: 30px;
             max-width: 1200px;
             margin: 30px auto;
-            background-color: #001925; /* Dark background */
-            border-left: 5px solid #caf438; /* Accent */
-            color: #87a4b6; /* Light text */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-            border-radius: 8px;
+            background-color: #001925;
+            color: #87a4b6;
         }
 
         /* Header */
@@ -19,101 +16,99 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
             font-size: 1.8rem;
-            color: #caf438; /* Highlighted heading */
+            color: #caf438;
             font-weight: bold;
         }
 
-        /* Task Cards Section */
-        .task-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+        /* Task List */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Spacing between tasks */
         }
 
-        .task-card {
-            background-color: #002733; /* Card background */
-            border-left: 5px solid #caf438; /* Accent */
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-        }
-
-        .task-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #caf438; /* Task title highlight */
-            font-weight: bold;
-        }
-
-        .task-card p {
-            font-size: 1rem;
-            margin-bottom: 15px;
-            color: #87a4b6; /* Task description color */
-        }
-
-        /* Status Badge */
-        .status {
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            height: 40px;
+            width: 50%;
+            min-width: 300px;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #002733;
+            border-left: 5px solid #caf438;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .task-item:hover {
+            background-color: #003a47;
+        }
+
+        .task-title {
+            font-weight: bold;
+            color: #caf438;
+        }
+
+        .task-status {
             padding: 5px 10px;
             border-radius: 5px;
+            font-size: 0.8rem;
             font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
-        .status.pending {
+        .status-pending {
             background-color: #f43f5e;
             color: white;
         }
 
-        .status.in_progress {
+        .status-in-progress {
             background-color: #f59e0b;
             color: white;
         }
 
-        .status.completed {
+        .status-completed {
             background-color: #22c55e;
             color: white;
         }
 
-        /* Assigned User */
-        .assigned-user {
-            font-size: 0.9rem;
+        .task-assigned {
             color: #87a4b6;
         }
 
-        .assigned-user span {
-            color: #caf438;
-            font-weight: bold;
-        }
-
-        /* Buttons Section */
+        /* Action Icons */
         .task-actions {
-            margin-top: 15px;
             display: flex;
+            align-items: center;
             gap: 10px;
         }
 
-        .action-btn {
-            background: none;
+        .action-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
             border: 1px solid #caf438;
+            border-radius: 50%;
             color: #caf438;
-            padding: 5px 10px;
-            border-radius: 5px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s, color 0.3s;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .action-btn:hover {
-            background: #caf438;
+        .action-icon:hover {
+            background-color: #caf438;
             color: #001925;
         }
 
@@ -126,9 +121,8 @@
             border-radius: 5px;
             font-size: 1rem;
             font-weight: bold;
-            text-transform: uppercase;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background-color 0.3s;
         }
 
         .add-new:hover {
@@ -161,22 +155,30 @@
             </a>
         </div>
 
-        <div class="task-cards">
+        <div class="task-list">
             {% if tasks %}
                 {% for task in tasks %}
-                    <div class="task-card">
-                        <h3>{{ task.title }}</h3>
-                        <p>{{ task.description }}</p>
-                        <span class="status {{ task.status }}">{{ task.get_status_display }}</span>
-                        <p class="assigned-user">
-                            Assigned to: <span>{{ task.assigned_to.username|default:"Unassigned" }}</span>
-                        </p>
+                    <div class="task-item">
+                        <span class="task-title">{{ task.title }}</span>
+                        <span class="task-status 
+                            {% if task.status == 'pending' %}status-pending
+                            {% elif task.status == 'in_progress' %}status-in-progress
+                            {% elif task.status == 'completed' %}status-completed{% endif %}">
+                            {{ task.get_status_display }}
+                        </span>
+                        <span class="task-assigned">
+                            {% if task.assigned_to %}
+                                Assigned to: {{ task.assigned_to.username }}
+                            {% else %}
+                                Unassigned
+                            {% endif %}
+                        </span>
                         <div class="task-actions">
-                            <a href="{% url 'edit_task' project.id task.id %}">
-                                <button class="action-btn">Edit</button>
+                            <a href="{% url 'edit_task' project.id task.id %}" title="Edit">
+                                <div class="action-icon">&#9998;</div> <!-- Pencil Icon -->
                             </a>
-                            <a href="{% url 'delete_task' project.id task.id %}">
-                                <button class="action-btn">Delete</button>
+                            <a href="{% url 'delete_task' project.id task.id %}" title="Delete">
+                                <div class="action-icon">&#10006;</div> <!-- Cross Icon -->
                             </a>
                         </div>
                     </div>
