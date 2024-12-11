@@ -1,195 +1,280 @@
 {% extends 'base.html' %}
 {% block title %}Task List{% endblock %}
 {% block content %}
-    <style>
-        /* Main Container */
-        .container {
-            padding: 30px;
-            max-width: 1200px;
-            margin: 30px auto;
-            background-color: #001925;
-            color: #87a4b6;
-        }
+<style>
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+}
 
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
 
-        .header h1 {
-            font-size: 1.8rem;
-            color: #caf438;
-            font-weight: bold;
-        }
+.header h1 {
+    font-size: 24px;
+    color: #caf438;
+    font-weight: 500;
+}
 
-        /* Task List */
-        .task-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px; /* Spacing between tasks */
-        }
+/* Toolbar Section */
+.toolbar {
+    background-color: #001925;
+    padding: 16px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-        .task-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            height: 40px;
-            width: 50%;
-            min-width: 300px;
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #002733;
-            border-left: 5px solid #caf438;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease;
-        }
+.search-box {
+    background-color: #002733;
+    border: 1px solid #2e4756;
+    border-radius: 3px;
+    padding: 8px 12px;
+    color: #87a4b6;
+    width: 240px;
+}
 
-        .task-item:hover {
-            background-color: #003a47;
-        }
+.search-box:focus {
+    border-color: #caf438;
+    outline: none;
+}
 
-        .task-title {
-            font-weight: bold;
-            color: #caf438;
-        }
+.add-task-button {
+    background-color: #caf438;
+    color: #001925;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
-        .task-status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+.add-task-button:hover {
+    background-color: #b5e029;
+}
 
-        .status-pending {
-            background-color: #f43f5e;
-            color: white;
-        }
+/* Tasks List */
+.tasks-list {
+    background-color: #001925;
+    border-radius: 3px;
+}
 
-        .status-in-progress {
-            background-color: #f59e0b;
-            color: white;
-        }
+/* Task Card */
+.task-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid #002733;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: background-color 0.2s ease;
+}
 
-        .status-completed {
-            background-color: #22c55e;
-            color: white;
-        }
+.task-item:hover {
+    background-color: #002733;
+}
 
-        .task-assigned {
-            color: #87a4b6;
-        }
+.task-item:last-child {
+    border-bottom: none;
+}
 
-        /* Action Icons */
-        .task-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.task-status-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
 
-        .action-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            border: 1px solid #caf438;
-            border-radius: 50%;
-            color: #caf438;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+.status-pending {
+    background-color: #f43f5e;
+    color: white;
+}
 
-        .action-icon:hover {
-            background-color: #caf438;
-            color: #001925;
-        }
+.status-in-progress {
+    background-color: #f59e0b;
+    color: white;
+}
 
-        /* Add Task Button */
-        .add-new {
-            padding: 10px 20px;
-            background-color: #caf438;
-            color: #001925;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.status-completed {
+    background-color: #22c55e;
+    color: white;
+}
 
-        .add-new:hover {
-            background-color: #a5d61f;
-        }
+.task-content {
+    flex: 1;
+    min-width: 0;
+}
 
-        /* Back Link */
-        .back-link {
-            text-align: center;
-            margin-top: 30px;
-        }
+.task-title {
+    color: #caf438;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
 
-        .back-link a {
-            color: #caf438;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
-        }
+.task-meta {
+    color: #87a4b6;
+    font-size: 13px;
+    display: flex;
+    gap: 16px;
+}
 
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+.task-assigned {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
 
-    <div class="container">
-        <div class="header">
-            <h1>Project: {{ project.name }}</h1>
-            <a href="{% url 'create_task' project.id %}">
-                <button class="add-new">Add Task</button>
-            </a>
-        </div>
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
 
-        <div class="task-list">
-            {% if tasks %}
-                {% for task in tasks %}
-                    <div class="task-item">
-                        <span class="task-title">{{ task.title }}</span>
-                        <span class="task-status 
-                            {% if task.status == 'pending' %}status-pending
-                            {% elif task.status == 'in_progress' %}status-in-progress
-                            {% elif task.status == 'completed' %}status-completed{% endif %}">
-                            {{ task.get_status_display }}
-                        </span>
-                        <span class="task-assigned">
-                            {% if task.assigned_to %}
-                                Assigned to: {{ task.assigned_to.username }}
-                            {% else %}
-                                Unassigned
-                            {% endif %}
-                        </span>
-                        <div class="task-actions">
-                            <a href="{% url 'edit_task' project.id task.id %}" title="Edit">
-                                <div class="action-icon">&#9998;</div> <!-- Pencil Icon -->
-                            </a>
-                            <a href="{% url 'delete_task' project.id task.id %}" title="Delete">
-                                <div class="action-icon">&#10006;</div> <!-- Cross Icon -->
-                            </a>
+.action-button {
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.edit-button {
+    background-color: #002733;
+    border: 1px solid #caf438;
+    color: #caf438;
+}
+
+.edit-button:hover {
+    background-color: #caf438;
+    color: #001925;
+}
+
+.delete-button {
+    background-color: #002733;
+    border: 1px solid #ff5630;
+    color: #ff5630;
+}
+
+.delete-button:hover {
+    background-color: #ff5630;
+    color: #001925;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #001925;
+    border-radius: 3px;
+    color: #87a4b6;
+}
+
+/* Back Link */
+.back-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.back-link a {
+    color: #caf438;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .task-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+</style>
+
+<div class="container">
+    <div class="header">
+        <h1>{{ project.name }} - Tasks</h1>
+    </div>
+
+    <div class="toolbar">
+        <form method="GET" action="{% url 'task_list' project.id %}">
+            <input type="text" name="search" class="search-box" placeholder="Search tasks..." value="{{ search_query }}">
+            <button type="submit" class="add-task-button">Search</button>
+        </form>
+        <a href="{% url 'create_task' project.id %}">
+            <button class="add-task-button">Add Task</button>
+        </a>
+    </div>
+
+    <div class="tasks-list">
+        {% if tasks %}
+            {% for task in tasks %}
+                <div class="task-item">
+                    <div class="task-status-icon 
+                        {% if task.status == 'pending' %}status-pending
+                        {% elif task.status == 'in_progress' %}status-in-progress
+                        {% elif task.status == 'completed' %}status-completed{% endif %}">
+                        {% if task.status == 'completed' %}✓{% else %}•{% endif %}
+                    </div>
+                    <div class="task-content">
+                        <div class="task-title">{{ task.title }}</div>
+                        <div class="task-meta">
+                            <span class="task-status">{{ task.get_status_display }}</span>
+                            <span class="task-assigned">
+                                {% if task.assigned_to %}
+                                    <span>Assigned to: {{ task.assigned_to.username }}</span>
+                                {% else %}
+                                    <span>Unassigned</span>
+                                {% endif %}
+                            </span>
                         </div>
                     </div>
-                {% endfor %}
-            {% else %}
-                <p>No tasks available.</p>
-            {% endif %}
-        </div>
-
-        <div class="back-link">
-            <a href="{% url 'project_list' %}">Back to Project List</a>
-        </div>
+                    <div class="task-actions">
+                        <a href="{% url 'edit_task' project.id task.id %}" class="action-button edit-button">Edit</a>
+                        <a href="{% url 'delete_task' project.id task.id %}" class="action-button delete-button">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <p>No tasks available. Create your first task to get started.</p>
+            </div>
+        {% endif %}
     </div>
+
+    <div class="back-link">
+        <a href="{% url 'project_list' %}">← Back to Project List</a>
+    </div>
+</div>
 {% endblock %}
